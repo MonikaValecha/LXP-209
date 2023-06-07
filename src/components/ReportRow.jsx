@@ -4,7 +4,7 @@ function ReportRow({ issueData, index, StoreArray }) {
   
   const cells = [];
 
-  const serialNumberCell = <td className="fixed-column">{index + 1}</td>
+  const serialNumberCell = <td>{index + 1}</td>
   cells.push(serialNumberCell);
 
 
