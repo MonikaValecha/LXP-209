@@ -6,7 +6,8 @@ import ReportContent from './components/ReportContent';
 
 function Issuesrelations() {
   const [issues, setIssues] = useState([]);
-  const [issueslink, setIssueslink] = useState([]);
+  // const [issueslink, setIssueslink] = useState([]);
+  const [storeArray, setStoreArray] = useState([]);
 
 
   const getIssues=() => {
@@ -30,7 +31,25 @@ function Issuesrelations() {
       success: response => { 
         console.log(response);
         response = JSON.parse(response) 
-        setIssueslink(response.issueLinkTypes || []);
+        // setIssueslink(response.issueLinkTypes || []);
+        const issueslink=response.issueLinkTypes;
+        const uniqueValues = new Set();
+        const storeArray=[];
+        // issueslink.forEach(data=>{
+        //   storeArray.push(data.inward)
+        //   storeArray.push(data.outward)
+        // })
+        issueslink.forEach(data=>{
+          if(!uniqueValues.has(data.inward)){
+            storeArray.push(data.inward);
+            uniqueValues.add(data.inward);
+          }
+          if(!uniqueValues.has(data.outward)){
+            storeArray.push(data.outward);
+            uniqueValues.add(data.outward);
+          }
+        })
+        setStoreArray(storeArray);
       }, 
       error: () => {  
         console.log(arguments);
@@ -41,24 +60,24 @@ function Issuesrelations() {
     getIssues();
     issueLinkType();
   },[]);
-  const StoreArray=[];
-  issueslink.forEach(data=>{
-      StoreArray.push(data.inward)
-      StoreArray.push(data.outward)
+  // const StoreArray=[];
+  // issueslink.forEach(data=>{
+  //     StoreArray.push(data.inward)
+  //     StoreArray.push(data.outward)
       
-    })
-    console.log(StoreArray);
+  //   })
+  //   console.log(StoreArray);
   return (
     <div className="table-container">
       <h1>Issue Link Type View</h1>
       <table>
           <ReportHeader 
-            StoreArray={StoreArray}
+            StoreArray={storeArray}
           />
           <ReportContent
           issues={issues}
-          issueslink={issueslink}
-          StoreArray={StoreArray}
+          // issueslink={issueslink}
+          StoreArray={storeArray}
            />
       </table>
     </div>
