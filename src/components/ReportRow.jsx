@@ -4,27 +4,27 @@ function ReportRow({ issueData, index, StoreArray }) {
   
   const cells = [];
 
-  const serialNumberCell = <td>{index + 1}</td>
+  const serialNumberCell = <td key="serialNo">{index + 1}</td>
   cells.push(serialNumberCell);
 
 
   const mainissuecell = (
-    <td><span>{issueData.key} : {issueData.fields.summary}</span></td>
+    <td key = "mainIssue"><span>{issueData.key} : {issueData.fields.summary}</span></td>
   );
   cells.push(mainissuecell);
 
-  StoreArray.map(data=>{
-      const matchingIssues=(issueData.fields.issuelinks.filter(Element=>{
+  StoreArray.forEach((data,i)=>{
+      const matchingIssues=(issueData.fields.issuelinks.filter(Element => {
         let directionCheck;
         if(Element.outwardIssue){
            directionCheck=Element.type.outward;
-           if(directionCheck==data){
+           if(directionCheck===data){
             return true;
            }
         }
         else if(Element.inwardIssue){
           directionCheck=Element.type.inward;
-          if(directionCheck==data){
+          if(directionCheck===data){
             return true;
            }
         }
@@ -33,13 +33,13 @@ function ReportRow({ issueData, index, StoreArray }) {
       if(matchingIssues.length>0){
         const span=[];
         matchingIssues.forEach(matchingIssuesData=>{
-          const matchingData=<span>{matchingIssuesData.outwardIssue?.key  || matchingIssuesData.inwardIssue?.key } : {matchingIssuesData.outwardIssue?.fields.summary  || matchingIssuesData.inwardIssue?.fields.summary}<br /></span> 
+          const matchingData=<span key={matchingIssuesData.id}>{matchingIssuesData.outwardIssue?.key  || matchingIssuesData.inwardIssue?.key } : {matchingIssuesData.outwardIssue?.fields.summary  || matchingIssuesData.inwardIssue?.fields.summary}<br /></span> 
           span.push(matchingData);
         })
-        cells.push(<td>{span}</td>);
+        cells.push(<td key={i}>{span}</td>);
       }
       else{
-        const empty=<td> </td>
+        const empty=<td key={i}> </td>
         cells.push(empty);
       }
       
